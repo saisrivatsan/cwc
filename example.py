@@ -282,6 +282,14 @@ createEigenArrayi = _example.createEigenArrayi
 def createEigenArrayVecti():
     return _example.createEigenArrayVecti()
 createEigenArrayVecti = _example.createEigenArrayVecti
+
+def test_code():
+    return _example.test_code()
+test_code = _example.test_code
+
+def mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out):
+    return _example.mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out)
+mithral_encode = _example.mithral_encode
 # This file is compatible with both classic and new-style classes.
 
 

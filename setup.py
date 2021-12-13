@@ -36,10 +36,10 @@ print(srcFiles)
 
 os.environ["CC"] = "g++" # force compiling c as c++
 extra_args = ['-std=c++14','-fno-rtti','-march=native', '-ffast-math']
-extra_args += ['-stdlib=libc++']
-os.environ['CC'] = "clang"
-os.environ['CXX'] = "clang++"
-os.environ['LDFLAGS'] = '-lc++'
+#extra_args += ['-stdlib=libc++']
+#os.environ['CC'] = "clang"
+#os.environ['CXX'] = "clang++"
+#os.environ['LDFLAGS'] = '-lc++'
 
 # inplace extension module
 _example = Extension("_example",

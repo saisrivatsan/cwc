@@ -3,6 +3,15 @@
 #define PUBLIC_INTERFACE_EIGEN_HPP
 
 #include <Eigen/Dense>
+#include <assert.h>
+#include <stdint.h>
+#include <sys/types.h>
+#include <cmath>
+#include <type_traits>
+#include <limits>
+#include "immintrin.h"
+#include "avx_utils.hpp"
+#include "eigen_utils.hpp"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -34,4 +43,7 @@ VectorXi createEigenVecti();
 ArrayXXi createEigenArrayi();
 ArrayXi createEigenArrayVecti();
 
+int test_code();
+
+void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* splitdims, const int8_t* all_splitvals, const float* scales, const float* offsets, int ncodebooks, uint8_t* out);
 #endif
