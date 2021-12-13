@@ -197,3 +197,9 @@ void profile_encode(int N, int D, int M, int nbytes)
     mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data());
     
 } 
+
+ColMatrix<float> test_func(ColMatrix<float> X)
+{
+    X.setRandom();
+    return X;
+}

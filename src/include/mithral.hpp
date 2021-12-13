@@ -34,7 +34,7 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks, int nou
 
 // ------------------------ profile
 void profile_encode(int N, int D, int M, int nbytes);
-
+ColMatrix<float> test_func(ColMatrix<float> X);
 
 // ================================================================ here
 // TODO ideally these should all be in the cpp file; for now they're still

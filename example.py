@@ -115,6 +115,10 @@ mithral_scan = _example.mithral_scan
 def profile_encode(N, D, M, nbytes):
     return _example.profile_encode(N, D, M, nbytes)
 profile_encode = _example.profile_encode
+
+def test_func():
+    return _example.test_func()
+test_func = _example.test_func
 # This file is compatible with both classic and new-style classes.
 
 
