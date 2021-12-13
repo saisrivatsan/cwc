@@ -142,6 +142,7 @@ void mithral_encode(
     const float* scales, const float* offsets, int ncodebooks, uint8_t* out)
     // const float* scales, int ncodebooks, uint8_t* out)
 {
+   (N, D); X.setRandom();
     static constexpr bool DeferPerm = true;
     static constexpr int block_nrows = 32;
     static constexpr int nsplits_per_codebook = 4;
@@ -222,4 +223,37 @@ void mithral_encode(
             out_ptr += block_nrows;
         }
     }
+}
+
+void profile_encode(int N, int D, int nbytes) 
+{
+    static constexpr int nsplits_per_codebook = 4;
+    static constexpr int group_id_nbits = 4;
+    static constexpr int max_ngroups = 1 << group_id_nbits;
+    int ncodebooks = 2 * nbytes;
+    int total_nsplits = ncodebooks * nsplits_per_codebook;
+    int ncodebooks_pq = nbytes;
+
+    // shared
+    ColMatrix<float> X(N, D); X.setRandom();
+    ColMatrix<uint8_t> out(N, ncodebooks); out.setRandom();
+
+    // mithral-specific (it's a lot of stuff to handle different dtypes)
+    RowVector<uint32_t> splitdims_(total_nsplits);
+    splitdims_.setRandom();
+    RowVector<uint32_t> splitdims = splitdims_.unaryExpr(
+        [=](const uint32_t x) { return x % D; });
+    // RowVector<uint32_t> splitdims(total_nsplits); splitdims.setZero(); // TODO rm
+    ColMatrix<int8_t> all_splitvals(max_ngroups, total_nsplits);
+    all_splitvals.setRandom();
+    RowVector<float> scales(MAX(D, total_nsplits)); // v2 needs D of these
+    scales.setRandom();
+    RowVector<float> offsets(MAX(D, total_nsplits)); // v2 needs D of these
+    offsets.setRandom();
+    ColMatrix<int8_t> X_i8(N, D); X_i8.setRandom();
+    ColMatrix<int16_t> X_i16(N, D); X_i16.setRandom();
+    RowVector<int16_t> offsets_i16(total_nsplits); offsets_i16.setRandom();
+    RowVector<uint8_t> shifts(total_nsplits); shifts.setRandom();
+
+    mithral_encode(X.data(), N, D, splitdims.data(), all_splitvals.data(), scales.data(), offsets.data(), ncodebooks, out.data()));
 }
