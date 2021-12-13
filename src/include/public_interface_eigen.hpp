@@ -3,6 +3,7 @@
 #define PUBLIC_INTERFACE_EIGEN_HPP
 
 #include <Eigen/Dense>
+#include <iostream>
 #include <assert.h>
 #include <stdint.h>
 #include <sys/types.h>
@@ -46,5 +47,5 @@ ArrayXi createEigenArrayVecti();
 int test_code();
 
 void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* splitdims, const int8_t* all_splitvals, const float* scales, const float* offsets, int ncodebooks, uint8_t* out);
-ColMatrix<uint8_t> profile_encode(int N, int D, int nbytes);
+MatrixXf profile_encode(int N, int D, int nbytes);
 #endif

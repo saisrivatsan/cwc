@@ -220,7 +220,7 @@ void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* sp
     }
 }
 
-ColMatrix<uint8_t> profile_encode(int N, int D, int nbytes) 
+MatrixXf profile_encode(int N, int D, int nbytes) 
 {
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
@@ -250,5 +250,14 @@ ColMatrix<uint8_t> profile_encode(int N, int D, int nbytes)
     RowVector<int16_t> offsets_i16(total_nsplits); offsets_i16.setRandom();
     RowVector<uint8_t> shifts(total_nsplits); shifts.setRandom();
     mithral_encode(X.data(), N, D, splitdims.data(), all_splitvals.data(), scales.data(), offsets.data(), ncodebooks, out.data());
-    return out;
+    
+	  MatrixXf M(N, ncodebooks);
+	  for (int i = 0; i < N; i++) 
+    {
+		  for (int j = 0; j < ncodebooks; j++) 
+      {
+			    M(i, j) = i * ncodebooks + j; // 0-11 in row-major order
+		  }
+	  }
+	return M;
 }
