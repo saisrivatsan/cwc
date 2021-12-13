@@ -135,7 +135,7 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks,
 
 // ================================================================== profile matmul
 
-void profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
+RowVector<float> profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
 {
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
@@ -146,6 +146,7 @@ void profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
     static constexpr int ncentroids = 16;
     static constexpr int lut_sz = 16;
     static constexpr int scan_block_nrows = 32;
+    auto nblocks = N / scan_block_nrows;
 
     ColMatrix<float> X(N, D); 
     X.setRandom();
@@ -153,16 +154,12 @@ void profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
     ColMatrix<float> Q(D, M); 
     Q.setRandom();
 
-    
-
     ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
     tmp_codes.setRandom();
 
     ColMatrix<uint8_t> codes(N, ncodebooks); 
     codes.setRandom();
-
-    
-    
+   
     float out_offset_sum;
     float out_scale;
     ColMatrix<uint16_t> out_mat(N, M);
@@ -183,30 +180,53 @@ void profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
     RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
     luts.setRandom();
 
+    ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
+    centroids.setRandom();
+
+    RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
+    tmp_luts_f32.setRandom();
+
     // Encode
+    auto begin = std::chrono::high_resolution_clock::now();
+    
     mithral_encode(X.data(), N, D, splitdims.data(), splitvals.data(), scales.data(), offsets.data(), ncodebooks, tmp_codes.data());
     zip_bolt_colmajor(tmp_codes.data(), N, ncodebooks, codes.data());
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed_e = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
     // LUT
+
+    auto begin = std::chrono::high_resolution_clock::now();
+
     if(create_lut)
-    {
-      ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
-      centroids.setRandom();
-
-      RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
-      tmp_luts_f32.setRandom();
-
-      
-      
+    {    
       mithral_lut_dense(Q.data(), M, D, ncodebooks, centroids.data(), out_offset_sum, out_scale, tmp_luts_f32.data(), luts.data());
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed_l = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
+
+
     // Scan
-    auto nblocks = N / scan_block_nrows;
+    auto begin = std::chrono::high_resolution_clock::now();
+    
     mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data());
     
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed_s = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
+    RowVector<float> elapsed_times(3);
+    elapsed_times(0) = elapsed_e.count * 1e-9
+    elapsed_times(1) = elapsed_l.count * 1e-9
+    elapsed_times(2) = elapsed_s.count * 1e-9
+
+    return elapsed_times
+
 } 
 
-void profile_matmul(int N, int D, int M)
+float profile_matmul(int N, int D, int M)
 {
 
     ColMatrix<float> X(N, D); 
@@ -216,5 +236,12 @@ void profile_matmul(int N, int D, int M)
     Q.setRandom();
 
     ColMatrix<float> out_mat(N, M);
+
+    auto begin = std::chrono::high_resolution_clock::now();
     out_mat.noalias() = X * D;
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    
+    return elapsed.count() * 1e-9;
+
 }

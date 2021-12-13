@@ -13,6 +13,7 @@
 #include <cmath>
 #include <type_traits>
 #include <limits>
+#include <chrono>
 #include "immintrin.h"
 #include "avx_utils.hpp"
 #include "eigen_utils.hpp"
@@ -33,8 +34,8 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks, int nou
 
 
 // ------------------------ profile
-void profile_mithral(int N, int D, int M, int nbytes, bool create_lut);
-void profile_matmul(int N, int D, int M);
+RowVector<float> profile_mithral(int N, int D, int M, int nbytes, bool create_lut);
+float profile_matmul(int N, int D, int M);
 
 // ================================================================ here
 // TODO ideally these should all be in the cpp file; for now they're still
