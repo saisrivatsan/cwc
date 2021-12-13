@@ -3004,20 +3004,21 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 /* -------- TYPES TABLE (BEGIN) -------- */
 
 #define SWIGTYPE_p_ArrayUser_dbl swig_types[0]
-#define SWIGTYPE_p_SimpleArrayClass swig_types[1]
-#define SWIGTYPE_p_SimpleClass swig_types[2]
-#define SWIGTYPE_p_SimpleStruct swig_types[3]
-#define SWIGTYPE_p_char swig_types[4]
-#define SWIGTYPE_p_double swig_types[5]
-#define SWIGTYPE_p_float swig_types[6]
-#define SWIGTYPE_p_int swig_types[7]
-#define SWIGTYPE_p_int64_t swig_types[8]
-#define SWIGTYPE_p_int8_t swig_types[9]
-#define SWIGTYPE_p_uint32_t swig_types[10]
-#define SWIGTYPE_p_uint8_t swig_types[11]
-#define SWIGTYPE_p_vectorT_SimpleStruct_p_t swig_types[12]
-static swig_type_info *swig_types[14];
-static swig_module_info swig_module = {swig_types, 13, 0, 0, 0, 0};
+#define SWIGTYPE_p_ColMatrixT_uint8_t_t swig_types[1]
+#define SWIGTYPE_p_SimpleArrayClass swig_types[2]
+#define SWIGTYPE_p_SimpleClass swig_types[3]
+#define SWIGTYPE_p_SimpleStruct swig_types[4]
+#define SWIGTYPE_p_char swig_types[5]
+#define SWIGTYPE_p_double swig_types[6]
+#define SWIGTYPE_p_float swig_types[7]
+#define SWIGTYPE_p_int swig_types[8]
+#define SWIGTYPE_p_int64_t swig_types[9]
+#define SWIGTYPE_p_int8_t swig_types[10]
+#define SWIGTYPE_p_uint32_t swig_types[11]
+#define SWIGTYPE_p_uint8_t swig_types[12]
+#define SWIGTYPE_p_vectorT_SimpleStruct_p_t swig_types[13]
+static swig_type_info *swig_types[15];
+static swig_module_info swig_module = {swig_types, 14, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -5167,6 +5168,46 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_profile_encode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int arg3 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  ColMatrix< uint8_t > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:profile_encode",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "profile_encode" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "profile_encode" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "profile_encode" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  result = profile_encode(arg1,arg2,arg3);
+  resultobj = SWIG_NewPointerObj((new ColMatrix< uint8_t >(static_cast< const ColMatrix< uint8_t >& >(result))), SWIGTYPE_p_ColMatrixT_uint8_t_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"SimpleStruct_x_set", _wrap_SimpleStruct_x_set, METH_VARARGS, NULL},
@@ -5215,6 +5256,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"createEigenArrayVecti", _wrap_createEigenArrayVecti, METH_VARARGS, NULL},
 	 { (char *)"test_code", _wrap_test_code, METH_VARARGS, NULL},
 	 { (char *)"mithral_encode", _wrap_mithral_encode, METH_VARARGS, NULL},
+	 { (char *)"profile_encode", _wrap_profile_encode, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -5222,6 +5264,7 @@ static PyMethodDef SwigMethods[] = {
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 static swig_type_info _swigt__p_ArrayUser_dbl = {"_p_ArrayUser_dbl", "ArrayUser_dbl *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_ColMatrixT_uint8_t_t = {"_p_ColMatrixT_uint8_t_t", "ColMatrix< uint8_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SimpleArrayClass = {"_p_SimpleArrayClass", "SimpleArrayClass *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SimpleClass = {"_p_SimpleClass", "SimpleClass *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SimpleStruct = {"_p_SimpleStruct", "SimpleStruct *", 0, 0, (void*)0, 0};
@@ -5237,6 +5280,7 @@ static swig_type_info _swigt__p_vectorT_SimpleStruct_p_t = {"_p_vectorT_SimpleSt
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_ArrayUser_dbl,
+  &_swigt__p_ColMatrixT_uint8_t_t,
   &_swigt__p_SimpleArrayClass,
   &_swigt__p_SimpleClass,
   &_swigt__p_SimpleStruct,
@@ -5252,6 +5296,7 @@ static swig_type_info *swig_type_initial[] = {
 };
 
 static swig_cast_info _swigc__p_ArrayUser_dbl[] = {  {&_swigt__p_ArrayUser_dbl, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_ColMatrixT_uint8_t_t[] = {  {&_swigt__p_ColMatrixT_uint8_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SimpleArrayClass[] = {  {&_swigt__p_SimpleArrayClass, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SimpleClass[] = {  {&_swigt__p_SimpleClass, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SimpleStruct[] = {  {&_swigt__p_SimpleStruct, 0, 0, 0},{0, 0, 0, 0}};
@@ -5267,6 +5312,7 @@ static swig_cast_info _swigc__p_vectorT_SimpleStruct_p_t[] = {  {&_swigt__p_vect
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_ArrayUser_dbl,
+  _swigc__p_ColMatrixT_uint8_t_t,
   _swigc__p_SimpleArrayClass,
   _swigc__p_SimpleClass,
   _swigc__p_SimpleStruct,

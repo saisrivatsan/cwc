@@ -290,6 +290,10 @@ test_code = _example.test_code
 def mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out):
     return _example.mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out)
 mithral_encode = _example.mithral_encode
+
+def profile_encode(N, D, nbytes):
+    return _example.profile_encode(N, D, nbytes)
+profile_encode = _example.profile_encode
 # This file is compatible with both classic and new-style classes.
 
 

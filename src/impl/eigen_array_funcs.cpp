@@ -136,13 +136,8 @@ int test_code()
   return 0;
 }
 
-void mithral_encode(
-    const float* X, int64_t nrows, int ncols,
-    const uint32_t* splitdims, const int8_t* all_splitvals,
-    const float* scales, const float* offsets, int ncodebooks, uint8_t* out)
-    // const float* scales, int ncodebooks, uint8_t* out)
+void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* splitdims, const int8_t* all_splitvals, const float* scales, const float* offsets, int ncodebooks, uint8_t* out)
 {
-   (N, D); X.setRandom();
     static constexpr bool DeferPerm = true;
     static constexpr int block_nrows = 32;
     static constexpr int nsplits_per_codebook = 4;
@@ -225,7 +220,7 @@ void mithral_encode(
     }
 }
 
-void profile_encode(int N, int D, int nbytes) 
+ColMatrix<uint8_t> profile_encode(int N, int D, int nbytes) 
 {
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
@@ -254,6 +249,6 @@ void profile_encode(int N, int D, int nbytes)
     ColMatrix<int16_t> X_i16(N, D); X_i16.setRandom();
     RowVector<int16_t> offsets_i16(total_nsplits); offsets_i16.setRandom();
     RowVector<uint8_t> shifts(total_nsplits); shifts.setRandom();
-
-    mithral_encode(X.data(), N, D, splitdims.data(), all_splitvals.data(), scales.data(), offsets.data(), ncodebooks, out.data()));
+    mithral_encode(X.data(), N, D, splitdims.data(), all_splitvals.data(), scales.data(), offsets.data(), ncodebooks, out.data());
+    return out;
 }
