@@ -45,6 +45,4 @@ ArrayXXi createEigenArrayi();
 ArrayXi createEigenArrayVecti();
 
 
-// encode
-// void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* splitdims, const int8_t* all_splitvals, const float* scales, const float* offsets, int ncodebooks, uint8_t* out);
 #endif

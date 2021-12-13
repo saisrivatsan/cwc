@@ -298,6 +298,10 @@ mithral_lut_dense = _example.mithral_lut_dense
 def mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out):
     return _example.mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out)
 mithral_scan = _example.mithral_scan
+
+def profile_encode(N, D, M, nbytes):
+    return _example.profile_encode(N, D, M, nbytes)
+profile_encode = _example.profile_encode
 # This file is compatible with both classic and new-style classes.
 
 

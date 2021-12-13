@@ -132,3 +132,135 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks,
 {
     mithral_scan<16, 2>(codes, nblocks, ncodebooks, noutputs, luts, dists_out);
 }
+
+// ================================================================== profile matmul
+
+/*void profile_encode(int N, int D, int M, int nbytes)
+{
+    static constexpr int nsplits_per_codebook = 4;
+    static constexpr int group_id_nbits = 4;
+    static constexpr int max_ngroups = 1 << group_id_nbits;
+    int ncodebooks = 2 * nbytes;
+    int total_nsplits = ncodebooks * nsplits_per_codebook;
+    static constexpr int ncentroids = 16;
+
+    // Data
+    ColMatrix<float> X(N, D); 
+    X.setRandom();
+
+    //ColMatrix<float> Q(D, M); 
+    //Q.setRandom();
+
+    // CLuster params
+    RowVector<uint32_t> splitdims_(total_nsplits);
+    splitdims_.setRandom();
+    RowVector<uint32_t> splitdims = splitdims_.unaryExpr([=](const uint32_t x) { return x % D; });
+   
+    ColMatrix<int8_t> splitvals(max_ngroups, total_nsplits);
+    splitvals.setRandom();
+
+    RowVector<float> scales(MAX(D, total_nsplits)); // v2 needs D of these
+    scales.setRandom();
+
+    RowVector<float> offsets(MAX(D, total_nsplits)); // v2 needs D of these
+    offsets.setRandom();
+   
+
+    ColMatrix<float> centroids();
+    centroids.setRandom(ncentroids * ncodebooks, D);
+
+    // Intermediates
+    ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
+    tmp_codes.setRandom();
+
+    //ColMatrix<uint8_t> codes(N, ncodebooks); 
+    //codes.setRandom();
+
+    //RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
+    //tmp_luts_f32.setRandom();
+
+    //RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
+    //RowMatrix.setRandom();
+
+
+    // Outputs
+    // float out_offset_sum;
+    // float out_scale;
+    // ColMatrix<output_t> out_mat(N, M);
+    // out_mat.setRandom();
+
+    // Encode
+    mithral_encode(X.data(), N, D, splitdims.data(), splitvals.data(), scales.data(), offsets.data(), ncodebooks, tmp_codes.data());
+    zip_bolt_colmajor(tmp_codes.data(), N, ncodebooks, codes.data());
+
+    // LUT 
+    // mithral_lut_dense(Q.data(), M, D, ncodebooks, centroids.data(), out_offset_sum, out_scale, tmp_luts_f32.data(), luts.data());
+
+    // Scan
+    // auto nblocks = N / scan_block_nrows;
+    // mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data());
+    
+} */
+
+void profile_encode(int N, int D, int M, int nbytes) 
+{
+    static constexpr int nsplits_per_codebook = 4;
+    static constexpr int group_id_nbits = 4;
+    static constexpr int max_ngroups = 1 << group_id_nbits;
+    int ncodebooks = 2 * nbytes;
+    int total_nsplits = ncodebooks * nsplits_per_codebook;
+    int ncodebooks_pq = nbytes;
+    static constexpr int ncentroids = 16;
+    static constexpr int lut_sz = 16;
+    static constexpr int scan_block_nrows = 32;
+
+    ColMatrix<float> X(N, D); 
+    X.setRandom();
+
+    ColMatrix<float> Q(D, M); 
+    Q.setRandom();
+
+    ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
+    centroids.setRandom();
+
+    ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
+    tmp_codes.setRandom();
+
+    ColMatrix<uint8_t> codes(N, ncodebooks); 
+    codes.setRandom();
+
+    RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
+    tmp_luts_f32.setRandom();
+
+    RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
+    luts.setRandom();
+    
+    float out_offset_sum;
+    float out_scale;
+    ColMatrix<uint16_t> out_mat(N, M);
+
+    RowVector<uint32_t> splitdims_(total_nsplits);
+    splitdims_.setRandom();
+    RowVector<uint32_t> splitdims = splitdims_.unaryExpr(
+        [=](const uint32_t x) { return x % D; });
+    // RowVector<uint32_t> splitdims(total_nsplits); splitdims.setZero(); // TODO rm
+    ColMatrix<int8_t> splitvals(max_ngroups, total_nsplits);
+    splitvals.setRandom();
+    RowVector<float> scales(MAX(D, total_nsplits)); // v2 needs D of these
+    scales.setRandom();
+
+    RowVector<float> offsets(MAX(D, total_nsplits)); // v2 needs D of these
+    offsets.setRandom();
+
+    // Encode
+    mithral_encode(X.data(), N, D, splitdims.data(), splitvals.data(), scales.data(), offsets.data(), ncodebooks, tmp_codes.data());
+    zip_bolt_colmajor(tmp_codes.data(), N, ncodebooks, codes.data());
+
+    // LUT
+    mithral_lut_dense(Q.data(), M, D, ncodebooks, centroids.data(), out_offset_sum, out_scale, tmp_luts_f32.data(), luts.data());
+
+    // Scan
+    auto nblocks = N / scan_block_nrows;
+    mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data());
+    
+} 

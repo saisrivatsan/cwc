@@ -31,6 +31,10 @@ void mithral_lut_dense(const float* Q, int nrows, int ncols, int ncodebooks, con
 // ------------------------ scan
 void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks, int noutputs, const uint8_t* luts, uint8_t* dists_out);
 
+
+// ------------------------ profile
+void profile_encode(int N, int D, int M, int nbytes);
+
 // ------------------------ wrapper
 
 template<class InputT> struct mithral_input_type_traits {};
