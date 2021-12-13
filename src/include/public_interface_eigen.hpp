@@ -44,8 +44,7 @@ VectorXi createEigenVecti();
 ArrayXXi createEigenArrayi();
 ArrayXi createEigenArrayVecti();
 
-int test_code();
 
-void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* splitdims, const int8_t* all_splitvals, const float* scales, const float* offsets, int ncodebooks, uint8_t* out);
-MatrixXf profile_encode(int N, int D, int nbytes);
+// encode
+// void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* splitdims, const int8_t* all_splitvals, const float* scales, const float* offsets, int ncodebooks, uint8_t* out);
 #endif

@@ -283,17 +283,21 @@ def createEigenArrayVecti():
     return _example.createEigenArrayVecti()
 createEigenArrayVecti = _example.createEigenArrayVecti
 
-def test_code():
-    return _example.test_code()
-test_code = _example.test_code
-
 def mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out):
     return _example.mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out)
 mithral_encode = _example.mithral_encode
 
-def profile_encode(N, D, nbytes):
-    return _example.profile_encode(N, D, nbytes)
-profile_encode = _example.profile_encode
+def zip_bolt_colmajor(codes_in, nrows, ncodebooks, codes_out):
+    return _example.zip_bolt_colmajor(codes_in, nrows, ncodebooks, codes_out)
+zip_bolt_colmajor = _example.zip_bolt_colmajor
+
+def mithral_lut_dense(Q, nrows, ncols, ncodebooks, centroids, out_offset_sum, out_scale, tmp_lut_f32, out):
+    return _example.mithral_lut_dense(Q, nrows, ncols, ncodebooks, centroids, out_offset_sum, out_scale, tmp_lut_f32, out)
+mithral_lut_dense = _example.mithral_lut_dense
+
+def mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out):
+    return _example.mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out)
+mithral_scan = _example.mithral_scan
 # This file is compatible with both classic and new-style classes.
 
 

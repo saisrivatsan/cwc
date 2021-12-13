@@ -136,6 +136,7 @@ int test_code()
   return 0;
 }
 
+/*
 void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* splitdims, const int8_t* all_splitvals, const float* scales, const float* offsets, int ncodebooks, uint8_t* out)
 {
     static constexpr bool DeferPerm = true;
@@ -220,6 +221,14 @@ void mithral_encode(const float* X, int64_t nrows, int ncols, const uint32_t* sp
     }
 }
 
+
+void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks, int noutputs, const uint8_t* luts, uint8_t* dists_out)
+{
+    mithral_scan<16, 2>(codes, nblocks, ncodebooks, noutputs, luts, dists_out);
+}
+
+
+
 MatrixXf profile_encode(int N, int D, int nbytes) 
 {
     static constexpr int nsplits_per_codebook = 4;
@@ -230,7 +239,7 @@ MatrixXf profile_encode(int N, int D, int nbytes)
     int ncodebooks_pq = nbytes;
 
     // shared
-    ColMatrix<float> X(N, D); X.setRandom();
+    MatrixXf X(N, D); X.setRandom();
     ColMatrix<uint8_t> out(N, ncodebooks); out.setRandom();
 
     // mithral-specific (it's a lot of stuff to handle different dtypes)
@@ -249,15 +258,8 @@ MatrixXf profile_encode(int N, int D, int nbytes)
     ColMatrix<int16_t> X_i16(N, D); X_i16.setRandom();
     RowVector<int16_t> offsets_i16(total_nsplits); offsets_i16.setRandom();
     RowVector<uint8_t> shifts(total_nsplits); shifts.setRandom();
+
     mithral_encode(X.data(), N, D, splitdims.data(), all_splitvals.data(), scales.data(), offsets.data(), ncodebooks, out.data());
     
-	  MatrixXf M(N, ncodebooks);
-	  for (int i = 0; i < N; i++) 
-    {
-		  for (int j = 0; j < ncodebooks; j++) 
-      {
-			    M(i, j) = i * ncodebooks + j; // 0-11 in row-major order
-		  }
-	  }
-	return M;
-}
+	  return X;
+} */
