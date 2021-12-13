@@ -135,7 +135,7 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks,
 
 // ================================================================== profile matmul
 
-void profile_encode(int N, int D, int M, int nbytes) 
+void profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
 {
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
@@ -153,8 +153,7 @@ void profile_encode(int N, int D, int M, int nbytes)
     ColMatrix<float> Q(D, M); 
     Q.setRandom();
 
-    ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
-    centroids.setRandom();
+    
 
     ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
     tmp_codes.setRandom();
@@ -162,11 +161,7 @@ void profile_encode(int N, int D, int M, int nbytes)
     ColMatrix<uint8_t> codes(N, ncodebooks); 
     codes.setRandom();
 
-    RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
-    tmp_luts_f32.setRandom();
-
-    RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
-    luts.setRandom();
+    
     
     float out_offset_sum;
     float out_scale;
@@ -185,21 +180,41 @@ void profile_encode(int N, int D, int M, int nbytes)
     RowVector<float> offsets(MAX(D, total_nsplits)); // v2 needs D of these
     offsets.setRandom();
 
+    RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
+    luts.setRandom();
+
     // Encode
     mithral_encode(X.data(), N, D, splitdims.data(), splitvals.data(), scales.data(), offsets.data(), ncodebooks, tmp_codes.data());
     zip_bolt_colmajor(tmp_codes.data(), N, ncodebooks, codes.data());
 
     // LUT
-    mithral_lut_dense(Q.data(), M, D, ncodebooks, centroids.data(), out_offset_sum, out_scale, tmp_luts_f32.data(), luts.data());
+    if(create_lut)
+    {
+      ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
+      centroids.setRandom();
 
+      RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
+      tmp_luts_f32.setRandom();
+
+      
+      
+      mithral_lut_dense(Q.data(), M, D, ncodebooks, centroids.data(), out_offset_sum, out_scale, tmp_luts_f32.data(), luts.data());
+    }
     // Scan
     auto nblocks = N / scan_block_nrows;
     mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data());
     
 } 
 
-ColMatrix<float> test_func(ColMatrix<float> X)
+void profile_matmul(int N, int D, int M)
 {
+
+    ColMatrix<float> X(N, D); 
     X.setRandom();
-    return X;
+
+    ColMatrix<float> Q(D, M); 
+    Q.setRandom();
+
+    ColMatrix<float> out_mat(N, M);
+    out_mat.noalias() = X * D;
 }

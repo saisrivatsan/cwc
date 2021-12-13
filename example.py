@@ -112,13 +112,13 @@ def mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out):
     return _example.mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out)
 mithral_scan = _example.mithral_scan
 
-def profile_encode(N, D, M, nbytes):
-    return _example.profile_encode(N, D, M, nbytes)
+def profile_encode(N, D, M, nbytes, create_lut):
+    return _example.profile_encode(N, D, M, nbytes, create_lut)
 profile_encode = _example.profile_encode
 
-def test_func():
-    return _example.test_func()
-test_func = _example.test_func
+def profile_matmul(N, D, M):
+    return _example.profile_matmul(N, D, M)
+profile_matmul = _example.profile_matmul
 # This file is compatible with both classic and new-style classes.
 
 
