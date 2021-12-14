@@ -3666,7 +3666,8 @@ SWIGINTERN PyObject *_wrap_profile_mithral(PyObject *SWIGUNUSEDPARM(self), PyObj
   int arg2 ;
   int arg3 ;
   int arg4 ;
-  bool arg5 ;
+  int arg5 ;
+  bool arg6 ;
   int val1 ;
   int ecode1 = 0 ;
   int val2 ;
@@ -3675,16 +3676,19 @@ SWIGINTERN PyObject *_wrap_profile_mithral(PyObject *SWIGUNUSEDPARM(self), PyObj
   int ecode3 = 0 ;
   int val4 ;
   int ecode4 = 0 ;
-  bool val5 ;
+  int val5 ;
   int ecode5 = 0 ;
+  bool val6 ;
+  int ecode6 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
   float result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:profile_mithral",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOO:profile_mithral",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5)) SWIG_fail;
   ecode1 = SWIG_AsVal_int(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "profile_mithral" "', argument " "1"" of type '" "int""'");
@@ -3705,12 +3709,17 @@ SWIGINTERN PyObject *_wrap_profile_mithral(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "profile_mithral" "', argument " "4"" of type '" "int""'");
   } 
   arg4 = static_cast< int >(val4);
-  ecode5 = SWIG_AsVal_bool(obj4, &val5);
+  ecode5 = SWIG_AsVal_int(obj4, &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "profile_mithral" "', argument " "5"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "profile_mithral" "', argument " "5"" of type '" "int""'");
   } 
-  arg5 = static_cast< bool >(val5);
-  result = (float)profile_mithral(arg1,arg2,arg3,arg4,arg5);
+  arg5 = static_cast< int >(val5);
+  ecode6 = SWIG_AsVal_bool(obj5, &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "profile_mithral" "', argument " "6"" of type '" "bool""'");
+  } 
+  arg6 = static_cast< bool >(val6);
+  result = (float)profile_mithral(arg1,arg2,arg3,arg4,arg5,arg6);
   resultobj = SWIG_From_float(static_cast< float >(result));
   return resultobj;
 fail:
