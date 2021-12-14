@@ -34,7 +34,7 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks, int nou
 
 
 // ------------------------ profile
-float profile_mithral(int N, int D, int M, int nbytes, bool create_lut);
+float profile_mithral(int N, int D, int M, int ncodebooks, bool create_lut);
 float profile_matmul(int N, int D, int M);
 
 // ================================================================ here

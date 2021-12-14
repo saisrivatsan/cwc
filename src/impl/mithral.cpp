@@ -1,13 +1,4 @@
-//
-//  mithral.cpp
-//  Bolt
-//
-//  Created by DB on 12/3/19.
-//  Copyright © 2019 D Blalock. All rights reserved.
-//
-
 #include "mithral.hpp"
-
 
 // ================================================================ encode
 
@@ -135,67 +126,64 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks,
 
 // ================================================================== profile matmul
 
-float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
+float profile_mithral(int N, int D, int M, int ncodebooks, bool create_lut = false) 
 {
     
 
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
     static constexpr int max_ngroups = 1 << group_id_nbits;
-    int ncodebooks = 2 * nbytes;
-    int total_nsplits = ncodebooks * nsplits_per_codebook;
-
     static constexpr int ncentroids = 16;
     static constexpr int lut_sz = ncentroids;
     static constexpr int scan_block_nrows = 32;
+
+    int total_nsplits = ncodebooks * nsplits_per_codebook;
     auto nblocks = N / scan_block_nrows;
 
 
     // Randomly initialize  for profiling
 
-    // Input Matrix
+    // Data Matrices
     ColMatrix<float> X(N, D);
-    X.setRandom();
-
-    // Weight Matrix
     ColMatrix<float> Q(D, M);
-    Q.setRandom();
 
-    // Centroids
-    ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
-    centroids.setRandom();
-
-    // Splitdims and Splitvals
-    RowVector<uint32_t> splitdims_(total_nsplits);
-    splitdims_.setRandom();
-    RowVector<uint32_t> splitdims = splitdims_.unaryExpr([=](const uint32_t x) { return x % D; });
+    // Other paramters for encoding and clustering
+    ColMatrix<float> centroids(ncentroids * ncodebooks, D);
+    RowVector<uint32_t> splitdims(total_nsplits);
     ColMatrix<int8_t> splitvals(max_ngroups, total_nsplits);
-    splitvals.setRandom();
+    RowVector<float> scales(MAX(D, total_nsplits)); 
+    RowVector<float> offsets(MAX(D, total_nsplits)); 
 
-    // Scales and Offsets
-    RowVector<float> scales(MAX(D, total_nsplits)); // v2 needs D of these
-    scales.setRandom();
-    RowVector<float> offsets(MAX(D, total_nsplits)); // v2 needs D of these
-    offsets.setRandom();
-
-    // Intermediates
+    // Intermediates Vars
     ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
-    tmp_codes.setRandom();
-
     ColMatrix<uint8_t> codes(N, ncodebooks); 
-    codes.setRandom();
-
     RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
-    tmp_luts_f32.setRandom();
-
     RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
-    luts.setRandom();
-   
+
     // Outputs
     float out_offset_sum;
     float out_scale;
     ColMatrix<uint16_t> out_mat(N, M);
 
+
+    // Randomly initialize data matrices
+    X.setRandom();
+    Q.setRandom();
+
+    // Randomly initialize parameters that would actually have to be learnt
+    centroids.setRandom();
+    splitdims.setRandom();
+    for (int i = 0; i < splitdims.size(); i++) 
+    {
+        splitdims(i) = splitdims(i) % D;
+    }
+    splitvals.setRandom();
+    scales.setRandom();
+    offsets.setRandom();
+ 
+    // Set this incase lut_create is not called
+    luts.setRandom();
+   
     // Start Timer
     auto begin = std::chrono::high_resolution_clock::now(); 
 
@@ -221,15 +209,16 @@ float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
 
 float profile_matmul(int N, int D, int M)
 {
-    // Randomly initialize matrices for profiling
+    // Data Matrices
     ColMatrix<float> X(N, D);
-    X.setRandom();
-
     ColMatrix<float> Q(D, M);
+
+    // Output vars
+    ColMatrix<float> out_mat(N, M);
+    X.setRandom();
     Q.setRandom();
 
-    ColMatrix<float> out_mat(N, M);
-
+    
     // Start Timer
     auto begin = std::chrono::high_resolution_clock::now();
 
