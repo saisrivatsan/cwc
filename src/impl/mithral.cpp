@@ -135,7 +135,7 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks,
 
 // ================================================================== profile matmul
 
-RowVector<float> profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
+float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
 {
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
@@ -186,44 +186,27 @@ RowVector<float> profile_mithral(int N, int D, int M, int nbytes, bool create_lu
     RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
     tmp_luts_f32.setRandom();
 
+    // Start Timer
+    auto begin = std::chrono::high_resolution_clock::now(); 
+
     // Encode
-    auto begin = std::chrono::high_resolution_clock::now();
-    
     mithral_encode(X.data(), N, D, splitdims.data(), splitvals.data(), scales.data(), offsets.data(), ncodebooks, tmp_codes.data());
     zip_bolt_colmajor(tmp_codes.data(), N, ncodebooks, codes.data());
     
-    auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed_e = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-
     // LUT
-
-    auto begin = std::chrono::high_resolution_clock::now();
-
-    if(create_lut)
-    {    
+    if(create_lut)  
+    {
       mithral_lut_dense(Q.data(), M, D, ncodebooks, centroids.data(), out_offset_sum, out_scale, tmp_luts_f32.data(), luts.data());
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed_l = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-
-
-
     // Scan
-    auto begin = std::chrono::high_resolution_clock::now();
+    mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data()); 
     
-    mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data());
-    
+    // End Timer
     auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed_s = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
-    RowVector<float> elapsed_times(3);
-    elapsed_times(0) = elapsed_e.count * 1e-9
-    elapsed_times(1) = elapsed_l.count * 1e-9
-    elapsed_times(2) = elapsed_s.count * 1e-9
-
-    return elapsed_times
-
+    return elapsed.count();
 } 
 
 float profile_matmul(int N, int D, int M)
@@ -237,8 +220,13 @@ float profile_matmul(int N, int D, int M)
 
     ColMatrix<float> out_mat(N, M);
 
+    // Start Timer
     auto begin = std::chrono::high_resolution_clock::now();
+
+    // Matmul
     out_mat.noalias() = X * D;
+
+    // End Timer
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     
