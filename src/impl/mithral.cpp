@@ -209,14 +209,12 @@ float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
     return elapsed.count();
 } 
 
-float profile_matmul(int N, int D, int M)
+float profile_matmul(ColMatrix<float> &X, ColMatrix<float> &Q)
 {
 
-    ColMatrix<float> X(N, D); 
-    X.setRandom();
-
-    ColMatrix<float> Q(D, M); 
-    Q.setRandom();
+    int N = X.rows()
+    int D = X.cols()
+    int M = Q.cols()
 
     ColMatrix<float> out_mat(N, M);
 

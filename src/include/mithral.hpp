@@ -35,7 +35,7 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks, int nou
 
 // ------------------------ profile
 float profile_mithral(int N, int D, int M, int nbytes, bool create_lut);
-float profile_matmul(int N, int D, int M);
+float profile_matmul(ColMatrix<float> &X, ColMatrix<float> &Q);
 
 // ================================================================ here
 // TODO ideally these should all be in the cpp file; for now they're still
