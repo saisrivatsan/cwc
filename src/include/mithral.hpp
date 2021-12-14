@@ -37,6 +37,11 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks, int nou
 float profile_mithral(int N, int D, int M, int ncodebooks, bool create_lut);
 float profile_matmul(int N, int D, int M);
 
+
+// -------------------------- wrapper functions
+ColMatrix<float> run_matmul(ColMatrix<float> &X, ColMatrix<float> &Q);
+ColMatrix<float> run_mithral(ColMatrix<float> &X, ColMatrix<float> &Q,  ColMatrix<float> &centroids,  RowVector<uint32_t> &splitdims, ColMatrix<int8_t> &splitvals, RowVector<float> &scales, RowVector<float> &offsets, RowMatrix<uint8_t> &luts);
+
 // ================================================================ here
 // TODO ideally these should all be in the cpp file; for now they're still
 // here because this makes it easy to profile different template params

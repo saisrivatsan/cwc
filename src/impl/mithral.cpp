@@ -223,7 +223,7 @@ float profile_matmul(int N, int D, int M)
     auto begin = std::chrono::high_resolution_clock::now();
 
     // Matmul
-    out_mat.noalias() = X * D;
+    out_mat.noalias() = X * Q;
 
     // End Timer
     auto end = std::chrono::high_resolution_clock::now();
@@ -231,4 +231,67 @@ float profile_matmul(int N, int D, int M)
     
     return elapsed.count() * 1e-9;
 
+}
+
+/* To be run only for the resnet setting with D = 147, M = 64 */
+ColMatrix<uint16_t> run_mithral(ColMatrix<float> &X, ColMatrix<float> &Q, 
+          ColMatrix<float> &centroids, 
+          RowVector<uint32_t> &splitdims, ColMatrix<int8_t> &splitvals,
+          RowVector<float> &scales, RowVector<float> &offsets,
+          RowMatrix<uint8_t> &luts)
+{
+  /*
+    Arguements:
+     X:          F32  [N x D] = [N x 147]
+     Q:          F32  [D x M] = [147 x 64]
+     centroids:  F32  [KC x D] = [16C x 64]
+     splitdims:  UI32 [total_nsplits] = [4C]
+     splitvals:  I8   [max_ngroups x total_nsplits] = [16 x 16C]
+     scales:     F32  [D] = [147]
+     offsets:    F32  [D] = [147]
+     luts:       UI8  [N x KC] = [N x 16C]
+
+     Returns:
+     out:        U16  [N x M] = [N x 64]       
+  */
+    static constexpr int nsplits_per_codebook = 4;
+    static constexpr int max_ngroups = 16;
+    static constexpr int ncentroids = 16;
+    static constexpr int lut_sz = ncentroids;
+    static constexpr int scan_block_nrows = 32;
+    
+    int N = X.rows();
+    int D = X.cols();
+    int M = Q.cols();
+    int ncodebooks = centroids.rows()/ncentroids;
+    auto nblocks = N / scan_block_nrows;
+
+    // Intermediates Vars
+    ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
+    ColMatrix<uint8_t> codes(N, ncodebooks); 
+
+    // Outputs
+    float out_offset_sum;
+    float out_scale;
+    ColMatrix<uint16_t> out_mat(N, M);
+
+    // Encode and Scan
+    mithral_encode(X.data(), N, D, splitdims.data(), splitvals.data(), scales.data(), offsets.data(), ncodebooks, tmp_codes.data());
+    zip_bolt_colmajor(tmp_codes.data(), N, ncodebooks, codes.data());
+    mithral_scan(codes.data(), nblocks, ncodebooks, M, luts.data(), (uint8_t*)out_mat.data());
+
+    return out_mat;
+
+}
+
+ColMatrix<float> run_matmul(ColMatrix<float> &X, ColMatrix<float> &Q)
+{
+    int N = X.rows();
+    int D = X.cols();
+    int M = Q.cols() ;  
+
+    // Matmul
+    ColMatrix<float> out_mat(N, M);
+    out_mat.noalias() = X * Q;
+    return out_mat;
 }
