@@ -4429,8 +4429,7 @@ SWIGINTERN PyObject *_wrap_run_mithral(PyObject *SWIGUNUSEDPARM(self), PyObject 
   ColMatrix< float > temp2 ;
   ColMatrix< float > temp3 ;
   RowVector< uint32_t > temp4 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
+  ColMatrix< int8_t > temp5 ;
   RowVector< float > temp6 ;
   RowVector< float > temp7 ;
   RowMatrix< uint8_t > temp8 ;
@@ -4469,14 +4468,12 @@ SWIGINTERN PyObject *_wrap_run_mithral(PyObject *SWIGUNUSEDPARM(self), PyObject 
     
     arg4 = &temp4;
   }
-  res5 = SWIG_ConvertPtr(obj4, &argp5, SWIGTYPE_p_ColMatrixT_int8_t_t,  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "run_mithral" "', argument " "5"" of type '" "ColMatrix< int8_t > &""'"); 
+  {
+    // In: non-const&
+    ConvertFromNumpyToEigen<ColMatrix<int8_t>>(&temp5, obj4);
+    
+    arg5 = &temp5;
   }
-  if (!argp5) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "run_mithral" "', argument " "5"" of type '" "ColMatrix< int8_t > &""'"); 
-  }
-  arg5 = reinterpret_cast< ColMatrix< int8_t > * >(argp5);
   {
     // In: non-const&
     ConvertFromNumpyToEigen<RowVector<float>>(&temp6, obj5);
@@ -4512,6 +4509,10 @@ SWIGINTERN PyObject *_wrap_run_mithral(PyObject *SWIGUNUSEDPARM(self), PyObject 
   {
     // Argout: &
     CopyFromEigenToNumPy<RowVector<uint32_t>>(obj3, arg4);
+  }
+  {
+    // Argout: &
+    CopyFromEigenToNumPy<ColMatrix<int8_t>>(obj4, arg5);
   }
   {
     // Argout: &
