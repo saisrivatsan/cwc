@@ -112,8 +112,8 @@ def mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out):
     return _example.mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out)
 mithral_scan = _example.mithral_scan
 
-def profile_mithral(N, D, M, nbytes, create_lut):
-    return _example.profile_mithral(N, D, M, nbytes, create_lut)
+def profile_mithral(X, Q, nbytes, create_lut):
+    return _example.profile_mithral(X, Q, nbytes, create_lut)
 profile_mithral = _example.profile_mithral
 
 def profile_matmul(X, Q):

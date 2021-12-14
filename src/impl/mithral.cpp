@@ -204,7 +204,7 @@ float profile_mithral(ColMatrix<float> &X, ColMatrix<float> &Q, int nbytes, bool
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
-    return elapsed.count();
+    return elapsed.count() * 1e-9;
 } 
 
 float profile_matmul(ColMatrix<float> &X, ColMatrix<float> &Q)
