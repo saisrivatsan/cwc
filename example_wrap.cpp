@@ -4330,37 +4330,38 @@ fail:
 
 SWIGINTERN PyObject *_wrap_profile_matmul(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  ColMatrix< float > *arg1 = 0 ;
-  ColMatrix< float > *arg2 = 0 ;
-  ColMatrix< float > temp1 ;
-  ColMatrix< float > temp2 ;
+  int arg1 ;
+  int arg2 ;
+  int arg3 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
   float result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:profile_matmul",&obj0,&obj1)) SWIG_fail;
-  {
-    // In: non-const&
-    ConvertFromNumpyToEigen<ColMatrix<float>>(&temp1, obj0);
-    
-    arg1 = &temp1;
-  }
-  {
-    // In: non-const&
-    ConvertFromNumpyToEigen<ColMatrix<float>>(&temp2, obj1);
-    
-    arg2 = &temp2;
-  }
-  result = (float)profile_matmul(*arg1,*arg2);
+  if (!PyArg_ParseTuple(args,(char *)"OOO:profile_matmul",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "profile_matmul" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "profile_matmul" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "profile_matmul" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  result = (float)profile_matmul(arg1,arg2,arg3);
   resultobj = SWIG_From_float(static_cast< float >(result));
-  {
-    // Argout: &
-    CopyFromEigenToNumPy<ColMatrix<float>>(obj0, arg1);
-  }
-  {
-    // Argout: &
-    CopyFromEigenToNumPy<ColMatrix<float>>(obj1, arg2);
-  }
   return resultobj;
 fail:
   return NULL;

@@ -44,7 +44,7 @@ extra_args = ['-std=c++14','-fno-rtti','-march=native', '-ffast-math']
 # inplace extension module
 _example = Extension("_example",
                    srcFiles,
-                   define_macros=[('NDEBUG', '1')],
+                   #define_macros=[('NDEBUG', '1')],
                    include_dirs=includeDirs,
                    swig_opts=['-c++'],
                    extra_compile_args=extra_args,

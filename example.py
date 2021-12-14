@@ -116,8 +116,8 @@ def profile_mithral(X, Q, nbytes, create_lut):
     return _example.profile_mithral(X, Q, nbytes, create_lut)
 profile_mithral = _example.profile_mithral
 
-def profile_matmul(X, Q):
-    return _example.profile_matmul(X, Q)
+def profile_matmul(N, D, M):
+    return _example.profile_matmul(N, D, M)
 profile_matmul = _example.profile_matmul
 # This file is compatible with both classic and new-style classes.
 

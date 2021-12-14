@@ -207,12 +207,14 @@ float profile_mithral(ColMatrix<float> &X, ColMatrix<float> &Q, int nbytes, bool
     return elapsed.count() * 1e-9;
 } 
 
-float profile_matmul(ColMatrix<float> &X, ColMatrix<float> &Q)
+float profile_matmul(int N, int D, int M)
 {
+    // Randomly initialize matrices for profiling
+    ColMatrix<float> X(N, D);
+    X.setRandom();
 
-    int N = X.rows();
-    int D = X.cols();
-    int M = Q.cols();
+    ColMatrix<float> Q(D, M);
+    Q.setRandom();
 
     ColMatrix<float> out_mat(N, M);
 
@@ -226,6 +228,7 @@ float profile_matmul(ColMatrix<float> &X, ColMatrix<float> &Q)
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     
+    std::cout << "Elapsed time (in s):" << elapsed.count() * 1e-9 << std::endl;
     return elapsed.count() * 1e-9;
 
 }
