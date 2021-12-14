@@ -135,8 +135,12 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks,
 
 // ================================================================== profile matmul
 
-float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
+float profile_mithral(ColMatrix<float> &X, ColMatrix<float> &Q, int nbytes, bool create_lut = false) 
 {
+    int N = X.rows();
+    int D = X.cols();
+    int M = Q.cols();
+
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
     static constexpr int max_ngroups = 1 << group_id_nbits;
@@ -147,12 +151,6 @@ float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
     static constexpr int lut_sz = 16;
     static constexpr int scan_block_nrows = 32;
     auto nblocks = N / scan_block_nrows;
-
-    ColMatrix<float> X(N, D); 
-    X.setRandom();
-
-    ColMatrix<float> Q(D, M); 
-    Q.setRandom();
 
     ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
     tmp_codes.setRandom();
@@ -212,9 +210,9 @@ float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
 float profile_matmul(ColMatrix<float> &X, ColMatrix<float> &Q)
 {
 
-    int N = X.rows()
-    int D = X.cols()
-    int M = Q.cols()
+    int N = X.rows();
+    int D = X.cols();
+    int M = Q.cols();
 
     ColMatrix<float> out_mat(N, M);
 

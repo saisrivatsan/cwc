@@ -3005,20 +3005,21 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 #define SWIGTYPE_p_ArrayT_double_Dynamic_Dynamic_RowMajor_t swig_types[0]
 #define SWIGTYPE_p_ArrayT_double_Dynamic_Dynamic_t swig_types[1]
-#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_RowMajor_t swig_types[2]
-#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_t swig_types[3]
-#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_RowMajor_t swig_types[4]
-#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_t swig_types[5]
-#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_RowMajor_t swig_types[6]
-#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_t swig_types[7]
-#define SWIGTYPE_p_char swig_types[8]
-#define SWIGTYPE_p_float swig_types[9]
-#define SWIGTYPE_p_int64_t swig_types[10]
-#define SWIGTYPE_p_int8_t swig_types[11]
-#define SWIGTYPE_p_uint32_t swig_types[12]
-#define SWIGTYPE_p_uint8_t swig_types[13]
-static swig_type_info *swig_types[15];
-static swig_module_info swig_module = {swig_types, 14, 0, 0, 0, 0};
+#define SWIGTYPE_p_ColMatrixT_float_t swig_types[2]
+#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_RowMajor_t swig_types[3]
+#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_t swig_types[4]
+#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_RowMajor_t swig_types[5]
+#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_t swig_types[6]
+#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_RowMajor_t swig_types[7]
+#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_t swig_types[8]
+#define SWIGTYPE_p_char swig_types[9]
+#define SWIGTYPE_p_float swig_types[10]
+#define SWIGTYPE_p_int64_t swig_types[11]
+#define SWIGTYPE_p_int8_t swig_types[12]
+#define SWIGTYPE_p_uint32_t swig_types[13]
+#define SWIGTYPE_p_uint8_t swig_types[14]
+static swig_type_info *swig_types[16];
+static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3307,6 +3308,16 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
     return SWIG_ERROR;
   if (val) *val = r ? true : false;
   return SWIG_OK;
+}
+
+
+  #define SWIG_From_double   PyFloat_FromDouble 
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_float  (float value)
+{    
+  return SWIG_From_double  (value);
 }
 
 
@@ -3919,16 +3930,6 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
   template<> int NumPyType<int>() {return NPY_INT;};
   template<> int NumPyType<long>() {return NPY_LONG;};
 
-
-  #define SWIG_From_double   PyFloat_FromDouble 
-
-
-SWIGINTERNINLINE PyObject *
-SWIG_From_float  (float value)
-{    
-  return SWIG_From_double  (value);
-}
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -4292,7 +4293,7 @@ SWIGINTERN PyObject *_wrap_profile_mithral(PyObject *SWIGUNUSEDPARM(self), PyObj
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
-  RowVector< float > result;
+  float result;
   
   if (!PyArg_ParseTuple(args,(char *)"OOOOO:profile_mithral",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
   ecode1 = SWIG_AsVal_int(obj0, &val1);
@@ -4320,10 +4321,8 @@ SWIGINTERN PyObject *_wrap_profile_mithral(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "profile_mithral" "', argument " "5"" of type '" "bool""'");
   } 
   arg5 = static_cast< bool >(val5);
-  result = profile_mithral(arg1,arg2,arg3,arg4,arg5);
-  {
-    ConvertFromEigenToNumPy<RowVector<float>>(&resultobj, &result);
-  }
+  result = (float)profile_mithral(arg1,arg2,arg3,arg4,arg5);
+  resultobj = SWIG_From_float(static_cast< float >(result));
   return resultobj;
 fail:
   return NULL;
@@ -4332,38 +4331,37 @@ fail:
 
 SWIGINTERN PyObject *_wrap_profile_matmul(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  int arg1 ;
-  int arg2 ;
-  int arg3 ;
-  int val1 ;
-  int ecode1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
+  ColMatrix< float > *arg1 = 0 ;
+  ColMatrix< float > *arg2 = 0 ;
+  ColMatrix< float > temp1 ;
+  ColMatrix< float > temp2 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
   float result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:profile_matmul",&obj0,&obj1,&obj2)) SWIG_fail;
-  ecode1 = SWIG_AsVal_int(obj0, &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "profile_matmul" "', argument " "1"" of type '" "int""'");
-  } 
-  arg1 = static_cast< int >(val1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "profile_matmul" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "profile_matmul" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = static_cast< int >(val3);
-  result = (float)profile_matmul(arg1,arg2,arg3);
+  if (!PyArg_ParseTuple(args,(char *)"OO:profile_matmul",&obj0,&obj1)) SWIG_fail;
+  {
+    // In: non-const&
+    ConvertFromNumpyToEigen<ColMatrix<float>>(&temp1, obj0);
+    
+    arg1 = &temp1;
+  }
+  {
+    // In: non-const&
+    ConvertFromNumpyToEigen<ColMatrix<float>>(&temp2, obj1);
+    
+    arg2 = &temp2;
+  }
+  result = (float)profile_matmul(*arg1,*arg2);
   resultobj = SWIG_From_float(static_cast< float >(result));
+  {
+    // Argout: &
+    CopyFromEigenToNumPy<ColMatrix<float>>(obj0, arg1);
+  }
+  {
+    // Argout: &
+    CopyFromEigenToNumPy<ColMatrix<float>>(obj1, arg2);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -4386,6 +4384,7 @@ static PyMethodDef SwigMethods[] = {
 
 static swig_type_info _swigt__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t = {"_p_ArrayT_double_Dynamic_Dynamic_RowMajor_t", "Array< double,Dynamic,Dynamic,RowMajor > *|RowArrayXXd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ArrayT_double_Dynamic_Dynamic_t = {"_p_ArrayT_double_Dynamic_Dynamic_t", "Array< double,Dynamic,Dynamic > *|ColArrayXXd *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_ColMatrixT_float_t = {"_p_ColMatrixT_float_t", "ColMatrix< float > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t = {"_p_MatrixT_double_Dynamic_Dynamic_RowMajor_t", "Matrix< double,Dynamic,Dynamic,RowMajor > *|RowMatrixXd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MatrixT_double_Dynamic_Dynamic_t = {"_p_MatrixT_double_Dynamic_Dynamic_t", "Matrix< double,Dynamic,Dynamic > *|ColMatrixXd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t = {"_p_MatrixT_float_Dynamic_Dynamic_RowMajor_t", "Matrix< float,Dynamic,Dynamic,RowMajor > *|RowMatrixXf *", 0, 0, (void*)0, 0};
@@ -4402,6 +4401,7 @@ static swig_type_info _swigt__p_uint8_t = {"_p_uint8_t", "uint8_t *", 0, 0, (voi
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t,
   &_swigt__p_ArrayT_double_Dynamic_Dynamic_t,
+  &_swigt__p_ColMatrixT_float_t,
   &_swigt__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t,
   &_swigt__p_MatrixT_double_Dynamic_Dynamic_t,
   &_swigt__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t,
@@ -4418,6 +4418,7 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t[] = {  {&_swigt__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ArrayT_double_Dynamic_Dynamic_t[] = {  {&_swigt__p_ArrayT_double_Dynamic_Dynamic_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_ColMatrixT_float_t[] = {  {&_swigt__p_ColMatrixT_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t[] = {  {&_swigt__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MatrixT_double_Dynamic_Dynamic_t[] = {  {&_swigt__p_MatrixT_double_Dynamic_Dynamic_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t[] = {  {&_swigt__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -4434,6 +4435,7 @@ static swig_cast_info _swigc__p_uint8_t[] = {  {&_swigt__p_uint8_t, 0, 0, 0},{0,
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t,
   _swigc__p_ArrayT_double_Dynamic_Dynamic_t,
+  _swigc__p_ColMatrixT_float_t,
   _swigc__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t,
   _swigc__p_MatrixT_double_Dynamic_Dynamic_t,
   _swigc__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t,
