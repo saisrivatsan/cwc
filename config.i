@@ -1,5 +1,3 @@
-
-
 %include "numpy.i"
 %init %{
     import_array();

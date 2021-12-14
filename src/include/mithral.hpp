@@ -3,7 +3,7 @@
 //
 //  Created by DB on 2019-10-28
 //  Copyright (c) 2019 DB. All rights reserved.
-//
+//  Modified by Sai Srivatsa Ravindranath
 #ifndef __MITHRAL_HPP
 #define __MITHRAL_HPP
 
