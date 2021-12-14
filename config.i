@@ -93,13 +93,13 @@ typedef Array<double, Dynamic, Dynamic, RowMajor> RowArrayXXd;
 
 
 %eigen_typemaps(RowVector<uint16_t>);
+%eigen_typemaps(RowVector<uint32_t>);
 %eigen_typemaps(RowVector<float>);
 %eigen_typemaps(RowMatrix<float>);
 %eigen_typemaps(ColMatrix<float>);
 %eigen_typemaps(RowMatrix<uint8_t>);
 %eigen_typemaps(ColMatrix<uint8_t>);
-
-
+%eigen_typemaps(ColMatrix<int8_t>);
 
 %eigen_typemaps(ArrayXXd)
 %eigen_typemaps(ArrayXd)
