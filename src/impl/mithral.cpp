@@ -242,14 +242,14 @@ ColMatrix<uint16_t> run_mithral(ColMatrix<float> &X, ColMatrix<float> &Q,
 {
   /*
     Arguements:
-     X:          F32  [N x D] = [N x 147]
-     Q:          F32  [D x M] = [147 x 64]
-     centroids:  F32  [KC x D] = [16C x 64]
-     splitdims:  UI32 [total_nsplits] = [4C]
-     splitvals:  I8   [max_ngroups x total_nsplits] = [16 x 16C]
-     scales:     F32  [D] = [147]
-     offsets:    F32  [D] = [147]
-     luts:       UI8  [N x KC] = [N x 16C]
+     X:          F32  [N x D] 
+     Q:          F32  [D x M] 
+     centroids:  F32  [KC x D] 
+     splitdims:  UI32 [total_nsplits]
+     splitvals:  I8   [max_ngroups x total_nsplits] = 
+     scales:     F32  [D] 
+     offsets:    F32  [D] 
+     luts:       UI8  [M x KC] = 
 
      Returns:
      out:        U16  [N x M] = [N x 64]       
