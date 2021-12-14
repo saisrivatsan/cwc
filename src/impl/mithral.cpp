@@ -146,7 +146,7 @@ float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false)
     int total_nsplits = ncodebooks * nsplits_per_codebook;
 
     static constexpr int ncentroids = 16;
-    static constexpr int lut_sz = 16;
+    static constexpr int lut_sz = 8;
     static constexpr int scan_block_nrows = 32;
     auto nblocks = N / scan_block_nrows;
 
