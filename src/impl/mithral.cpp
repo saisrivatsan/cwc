@@ -135,54 +135,66 @@ void mithral_scan(const uint8_t* codes, int64_t nblocks, int ncodebooks,
 
 // ================================================================== profile matmul
 
-float profile_mithral(ColMatrix<float> &X, ColMatrix<float> &Q, int nbytes, bool create_lut = false) 
+float profile_mithral(int N, int D, int M, int nbytes, bool create_lut = false) 
 {
-    int N = X.rows();
-    int D = X.cols();
-    int M = Q.cols();
+    
 
     static constexpr int nsplits_per_codebook = 4;
     static constexpr int group_id_nbits = 4;
     static constexpr int max_ngroups = 1 << group_id_nbits;
     int ncodebooks = 2 * nbytes;
     int total_nsplits = ncodebooks * nsplits_per_codebook;
-    int ncodebooks_pq = nbytes;
+
     static constexpr int ncentroids = 16;
     static constexpr int lut_sz = 16;
     static constexpr int scan_block_nrows = 32;
     auto nblocks = N / scan_block_nrows;
 
+
+    // Randomly initialize  for profiling
+
+    // Input Matrix
+    ColMatrix<float> X(N, D);
+    X.setRandom();
+
+    // Weight Matrix
+    ColMatrix<float> Q(D, M);
+    Q.setRandom();
+
+    // Centroids
+    ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
+    centroids.setRandom();
+
+    // Splitdims and Splitvals
+    RowVector<uint32_t> splitdims_(total_nsplits);
+    splitdims_.setRandom();
+    RowVector<uint32_t> splitdims = splitdims_.unaryExpr([=](const uint32_t x) { return x % D; });
+    ColMatrix<int8_t> splitvals(max_ngroups, total_nsplits);
+    splitvals.setRandom();
+
+    // Scales and Offsets
+    RowVector<float> scales(MAX(D, total_nsplits)); // v2 needs D of these
+    scales.setRandom();
+    RowVector<float> offsets(MAX(D, total_nsplits)); // v2 needs D of these
+    offsets.setRandom();
+
+    // Intermediates
     ColMatrix<uint8_t> tmp_codes(N, ncodebooks); 
     tmp_codes.setRandom();
 
     ColMatrix<uint8_t> codes(N, ncodebooks); 
     codes.setRandom();
-   
-    float out_offset_sum;
-    float out_scale;
-    ColMatrix<uint16_t> out_mat(N, M);
-
-    RowVector<uint32_t> splitdims_(total_nsplits);
-    splitdims_.setRandom();
-    RowVector<uint32_t> splitdims = splitdims_.unaryExpr(
-        [=](const uint32_t x) { return x % D; });
-    // RowVector<uint32_t> splitdims(total_nsplits); splitdims.setZero(); // TODO rm
-    ColMatrix<int8_t> splitvals(max_ngroups, total_nsplits);
-    splitvals.setRandom();
-    RowVector<float> scales(MAX(D, total_nsplits)); // v2 needs D of these
-    scales.setRandom();
-
-    RowVector<float> offsets(MAX(D, total_nsplits)); // v2 needs D of these
-    offsets.setRandom();
-
-    RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
-    luts.setRandom();
-
-    ColMatrix<float> centroids(ncentroids * ncodebooks, D); 
-    centroids.setRandom();
 
     RowMatrix<float> tmp_luts_f32(N, ncodebooks * lut_sz);
     tmp_luts_f32.setRandom();
+
+    RowMatrix<uint8_t> luts(N, ncodebooks * lut_sz);
+    luts.setRandom();
+   
+    // Outputs
+    float out_offset_sum;
+    float out_scale;
+    ColMatrix<uint16_t> out_mat(N, M);
 
     // Start Timer
     auto begin = std::chrono::high_resolution_clock::now(); 
@@ -228,7 +240,6 @@ float profile_matmul(int N, int D, int M)
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     
-    std::cout << "Elapsed time (in s):" << elapsed.count() * 1e-9 << std::endl;
     return elapsed.count() * 1e-9;
 
 }

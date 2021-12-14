@@ -1,4 +1,4 @@
-%module example
+%module mithral
 
 // include files that SWIG will need to see
 %{

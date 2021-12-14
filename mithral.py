@@ -9,12 +9,12 @@ if _swig_python_version_info >= (2, 7, 0):
     def swig_import_helper():
         import importlib
         pkg = __name__.rpartition('.')[0]
-        mname = '.'.join((pkg, '_example')).lstrip('.')
+        mname = '.'.join((pkg, '_mithral')).lstrip('.')
         try:
             return importlib.import_module(mname)
         except ImportError:
-            return importlib.import_module('_example')
-    _example = swig_import_helper()
+            return importlib.import_module('_mithral')
+    _mithral = swig_import_helper()
     del swig_import_helper
 elif _swig_python_version_info >= (2, 6, 0):
     def swig_import_helper():
@@ -22,20 +22,20 @@ elif _swig_python_version_info >= (2, 6, 0):
         import imp
         fp = None
         try:
-            fp, pathname, description = imp.find_module('_example', [dirname(__file__)])
+            fp, pathname, description = imp.find_module('_mithral', [dirname(__file__)])
         except ImportError:
-            import _example
-            return _example
+            import _mithral
+            return _mithral
         try:
-            _mod = imp.load_module('_example', fp, pathname, description)
+            _mod = imp.load_module('_mithral', fp, pathname, description)
         finally:
             if fp is not None:
                 fp.close()
         return _mod
-    _example = swig_import_helper()
+    _mithral = swig_import_helper()
     del swig_import_helper
 else:
-    import _example
+    import _mithral
 del _swig_python_version_info
 
 try:
@@ -97,28 +97,28 @@ except __builtin__.Exception:
 
 
 def mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out):
-    return _example.mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out)
-mithral_encode = _example.mithral_encode
+    return _mithral.mithral_encode(X, nrows, ncols, splitdims, all_splitvals, scales, offsets, ncodebooks, out)
+mithral_encode = _mithral.mithral_encode
 
 def zip_bolt_colmajor(codes_in, nrows, ncodebooks, codes_out):
-    return _example.zip_bolt_colmajor(codes_in, nrows, ncodebooks, codes_out)
-zip_bolt_colmajor = _example.zip_bolt_colmajor
+    return _mithral.zip_bolt_colmajor(codes_in, nrows, ncodebooks, codes_out)
+zip_bolt_colmajor = _mithral.zip_bolt_colmajor
 
 def mithral_lut_dense(Q, nrows, ncols, ncodebooks, centroids, out_offset_sum, out_scale, tmp_lut_f32, out):
-    return _example.mithral_lut_dense(Q, nrows, ncols, ncodebooks, centroids, out_offset_sum, out_scale, tmp_lut_f32, out)
-mithral_lut_dense = _example.mithral_lut_dense
+    return _mithral.mithral_lut_dense(Q, nrows, ncols, ncodebooks, centroids, out_offset_sum, out_scale, tmp_lut_f32, out)
+mithral_lut_dense = _mithral.mithral_lut_dense
 
 def mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out):
-    return _example.mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out)
-mithral_scan = _example.mithral_scan
+    return _mithral.mithral_scan(codes, nblocks, ncodebooks, noutputs, luts, dists_out)
+mithral_scan = _mithral.mithral_scan
 
-def profile_mithral(X, Q, nbytes, create_lut):
-    return _example.profile_mithral(X, Q, nbytes, create_lut)
-profile_mithral = _example.profile_mithral
+def profile_mithral(N, D, M, nbytes, create_lut):
+    return _mithral.profile_mithral(N, D, M, nbytes, create_lut)
+profile_mithral = _mithral.profile_mithral
 
 def profile_matmul(N, D, M):
-    return _example.profile_matmul(N, D, M)
-profile_matmul = _example.profile_matmul
+    return _mithral.profile_matmul(N, D, M)
+profile_matmul = _mithral.profile_matmul
 # This file is compatible with both classic and new-style classes.
 
 

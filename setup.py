@@ -15,7 +15,7 @@ except AttributeError:
     numpy_include = numpy.get_numpy_include()
 
 # gather up all the source files
-srcFiles = ['example.i']
+srcFiles = ['mithral.i']
 includeDirs = [numpy_include]
 srcDir = os.path.abspath('src')
 for root, dirnames, filenames in os.walk(srcDir):
@@ -36,13 +36,9 @@ print(srcFiles)
 
 os.environ["CC"] = "g++" # force compiling c as c++
 extra_args = ['-std=c++14','-fno-rtti','-march=native', '-ffast-math']
-#extra_args += ['-stdlib=libc++']
-#os.environ['CC'] = "clang"
-#os.environ['CXX'] = "clang++"
-#os.environ['LDFLAGS'] = '-lc++'
 
 # inplace extension module
-_example = Extension("_example",
+_mithral = Extension("_mithral",
                    srcFiles,
                    #define_macros=[('NDEBUG', '1')],
                    include_dirs=includeDirs,
@@ -51,12 +47,12 @@ _example = Extension("_example",
                    )
 
 # NumyTypemapTests setup
-setup(  name        = "SWIG Numpy Example",
-        description = "Example project to wrap a C/C++ library in Numpy",
-        author      = "D Blalock",
+setup(  name        = "Mithral Wrapper",
+        description = "Wrap a C/C++ Mithral library in Numpy",
+        author      = "Sai Srivatsa Ravindranath",
         version     = "1.0",
         license     = "MIT",
-        ext_modules = [_example]
+        ext_modules = [_mithral]
         )
 
 

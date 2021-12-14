@@ -3005,21 +3005,20 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 #define SWIGTYPE_p_ArrayT_double_Dynamic_Dynamic_RowMajor_t swig_types[0]
 #define SWIGTYPE_p_ArrayT_double_Dynamic_Dynamic_t swig_types[1]
-#define SWIGTYPE_p_ColMatrixT_float_t swig_types[2]
-#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_RowMajor_t swig_types[3]
-#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_t swig_types[4]
-#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_RowMajor_t swig_types[5]
-#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_t swig_types[6]
-#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_RowMajor_t swig_types[7]
-#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_t swig_types[8]
-#define SWIGTYPE_p_char swig_types[9]
-#define SWIGTYPE_p_float swig_types[10]
-#define SWIGTYPE_p_int64_t swig_types[11]
-#define SWIGTYPE_p_int8_t swig_types[12]
-#define SWIGTYPE_p_uint32_t swig_types[13]
-#define SWIGTYPE_p_uint8_t swig_types[14]
-static swig_type_info *swig_types[16];
-static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
+#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_RowMajor_t swig_types[2]
+#define SWIGTYPE_p_MatrixT_double_Dynamic_Dynamic_t swig_types[3]
+#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_RowMajor_t swig_types[4]
+#define SWIGTYPE_p_MatrixT_float_Dynamic_Dynamic_t swig_types[5]
+#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_RowMajor_t swig_types[6]
+#define SWIGTYPE_p_MatrixT_long_long_Dynamic_Dynamic_t swig_types[7]
+#define SWIGTYPE_p_char swig_types[8]
+#define SWIGTYPE_p_float swig_types[9]
+#define SWIGTYPE_p_int64_t swig_types[10]
+#define SWIGTYPE_p_int8_t swig_types[11]
+#define SWIGTYPE_p_uint32_t swig_types[12]
+#define SWIGTYPE_p_uint8_t swig_types[13]
+static swig_type_info *swig_types[15];
+static swig_module_info swig_module = {swig_types, 14, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3032,16 +3031,16 @@ static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
 #endif
 
 /*-----------------------------------------------
-              @(target):= _example.so
+              @(target):= _mithral.so
   ------------------------------------------------*/
 #if PY_VERSION_HEX >= 0x03000000
-#  define SWIG_init    PyInit__example
+#  define SWIG_init    PyInit__mithral
 
 #else
-#  define SWIG_init    init_example
+#  define SWIG_init    init_mithral
 
 #endif
-#define SWIG_name    "_example"
+#define SWIG_name    "_mithral"
 
 #define SWIGVERSION 0x030012 
 #define SWIG_VERSION SWIGVERSION
@@ -3295,616 +3294,6 @@ SWIG_AsVal_int (PyObject * obj, int *val)
   }  
   return res;
 }
-
-
-/* Macros to extract array attributes.
- */
-#if NPY_API_VERSION < 0x00000007
-#define is_array(a)            ((a) && PyArray_Check((PyArrayObject*)a))
-#define array_type(a)          (int)(PyArray_TYPE((PyArrayObject*)a))
-#define array_numdims(a)       (((PyArrayObject*)a)->nd)
-#define array_dimensions(a)    (((PyArrayObject*)a)->dimensions)
-#define array_size(a,i)        (((PyArrayObject*)a)->dimensions[i])
-#define array_strides(a)       (((PyArrayObject*)a)->strides)
-#define array_stride(a,i)      (((PyArrayObject*)a)->strides[i])
-#define array_data(a)          (((PyArrayObject*)a)->data)
-#define array_descr(a)         (((PyArrayObject*)a)->descr)
-#define array_flags(a)         (((PyArrayObject*)a)->flags)
-#define array_enableflags(a,f) (((PyArrayObject*)a)->flags) = f
-#else
-#define is_array(a)            ((a) && PyArray_Check(a))
-#define array_type(a)          PyArray_TYPE((PyArrayObject*)a)
-#define array_numdims(a)       PyArray_NDIM((PyArrayObject*)a)
-#define array_dimensions(a)    PyArray_DIMS((PyArrayObject*)a)
-#define array_strides(a)       PyArray_STRIDES((PyArrayObject*)a)
-#define array_stride(a,i)      PyArray_STRIDE((PyArrayObject*)a,i)
-#define array_size(a,i)        PyArray_DIM((PyArrayObject*)a,i)
-#define array_data(a)          PyArray_DATA((PyArrayObject*)a)
-#define array_descr(a)         PyArray_DESCR((PyArrayObject*)a)
-#define array_flags(a)         PyArray_FLAGS((PyArrayObject*)a)
-#define array_enableflags(a,f) PyArray_ENABLEFLAGS((PyArrayObject*)a,f)
-#endif
-#define array_is_contiguous(a) (PyArray_ISCONTIGUOUS((PyArrayObject*)a))
-#define array_is_native(a)     (PyArray_ISNOTSWAPPED((PyArrayObject*)a))
-#define array_is_fortran(a)    (PyArray_ISFORTRAN((PyArrayObject*)a))
-
-
-  /* Given a PyObject, return a string describing its type.
-   */
-  const char* pytype_string(PyObject* py_obj)
-  {
-    if (py_obj == NULL          ) return "C NULL value";
-    if (py_obj == Py_None       ) return "Python None" ;
-    if (PyCallable_Check(py_obj)) return "callable"    ;
-    if (PyString_Check(  py_obj)) return "string"      ;
-    if (PyInt_Check(     py_obj)) return "int"         ;
-    if (PyFloat_Check(   py_obj)) return "float"       ;
-    if (PyDict_Check(    py_obj)) return "dict"        ;
-    if (PyList_Check(    py_obj)) return "list"        ;
-    if (PyTuple_Check(   py_obj)) return "tuple"       ;
-#if PY_MAJOR_VERSION < 3
-    if (PyFile_Check(    py_obj)) return "file"        ;
-    if (PyModule_Check(  py_obj)) return "module"      ;
-    if (PyInstance_Check(py_obj)) return "instance"    ;
-#endif
-
-    return "unkown type";
-  }
-
-  /* Given a NumPy typecode, return a string describing the type.
-   */
-  const char* typecode_string(int typecode)
-  {
-    static const char* type_names[25] = {"bool",
-                                         "byte",
-                                         "unsigned byte",
-                                         "short",
-                                         "unsigned short",
-                                         "int",
-                                         "unsigned int",
-                                         "long",
-                                         "unsigned long",
-                                         "long long",
-                                         "unsigned long long",
-                                         "float",
-                                         "double",
-                                         "long double",
-                                         "complex float",
-                                         "complex double",
-                                         "complex long double",
-                                         "object",
-                                         "string",
-                                         "unicode",
-                                         "void",
-                                         "ntypes",
-                                         "notype",
-                                         "char",
-                                         "unknown"};
-    return typecode < 24 ? type_names[typecode] : type_names[24];
-  }
-
-  /* Make sure input has correct numpy type.  This now just calls
-     PyArray_EquivTypenums().
-   */
-  int type_match(int actual_type,
-                 int desired_type)
-  {
-    return PyArray_EquivTypenums(actual_type, desired_type);
-  }
-
-#ifdef SWIGPY_USE_CAPSULE
-  void free_cap(PyObject * cap)
-  {
-    void* array = (void*) PyCapsule_GetPointer(cap,SWIGPY_CAPSULE_NAME);
-    if (array != NULL) free(array);
-  }
-#endif
-
-
-
-
-  /* Given a PyObject pointer, cast it to a PyArrayObject pointer if
-   * legal.  If not, set the python error string appropriately and
-   * return NULL.
-   */
-  PyArrayObject* obj_to_array_no_conversion(PyObject* input,
-                                            int        typecode)
-  {
-    PyArrayObject* ary = NULL;
-    if (is_array(input) && (typecode == NPY_NOTYPE ||
-                            PyArray_EquivTypenums(array_type(input), typecode)))
-    {
-      ary = (PyArrayObject*) input;
-    }
-    else if is_array(input)
-    {
-      const char* desired_type = typecode_string(typecode);
-      const char* actual_type  = typecode_string(array_type(input));
-      PyErr_Format(PyExc_TypeError,
-                   "Array of type '%s' required.  Array of type '%s' given",
-                   desired_type, actual_type);
-      ary = NULL;
-    }
-    else
-    {
-      const char* desired_type = typecode_string(typecode);
-      const char* actual_type  = pytype_string(input);
-      PyErr_Format(PyExc_TypeError,
-                   "Array of type '%s' required.  A '%s' was given",
-                   desired_type,
-                   actual_type);
-      ary = NULL;
-    }
-    return ary;
-  }
-
-  /* Convert the given PyObject to a NumPy array with the given
-   * typecode.  On success, return a valid PyArrayObject* with the
-   * correct type.  On failure, the python error string will be set and
-   * the routine returns NULL.
-   */
-  PyArrayObject* obj_to_array_allow_conversion(PyObject* input,
-                                               int       typecode,
-                                               int*      is_new_object)
-  {
-    PyArrayObject* ary = NULL;
-    PyObject*      py_obj;
-    if (is_array(input) && (typecode == NPY_NOTYPE ||
-                            PyArray_EquivTypenums(array_type(input),typecode)))
-    {
-      ary = (PyArrayObject*) input;
-      *is_new_object = 0;
-    }
-    else
-    {
-      py_obj = PyArray_FROMANY(input, typecode, 0, 0, NPY_ARRAY_DEFAULT);
-      /* If NULL, PyArray_FromObject will have set python error value.*/
-      ary = (PyArrayObject*) py_obj;
-      *is_new_object = 1;
-    }
-    return ary;
-  }
-
-  /* Given a PyArrayObject, check to see if it is contiguous.  If so,
-   * return the input pointer and flag it as not a new object.  If it is
-   * not contiguous, create a new PyArrayObject using the original data,
-   * flag it as a new object and return the pointer.
-   */
-  PyArrayObject* make_contiguous(PyArrayObject* ary,
-                                 int*           is_new_object,
-                                 int            min_dims,
-                                 int            max_dims)
-  {
-    PyArrayObject* result;
-    if (array_is_contiguous(ary))
-    {
-      result = ary;
-      *is_new_object = 0;
-    }
-    else
-    {
-      result = (PyArrayObject*) PyArray_ContiguousFromObject((PyObject*)ary,
-                                                              array_type(ary),
-                                                              min_dims,
-                                                              max_dims);
-      *is_new_object = 1;
-    }
-    return result;
-  }
-
-  /* Given a PyArrayObject, check to see if it is Fortran-contiguous.
-   * If so, return the input pointer, but do not flag it as not a new
-   * object.  If it is not Fortran-contiguous, create a new
-   * PyArrayObject using the original data, flag it as a new object
-   * and return the pointer.
-   */
-  PyArrayObject* make_fortran(PyArrayObject* ary,
-                              int*           is_new_object)
-  {
-    PyArrayObject* result;
-    if (array_is_fortran(ary))
-    {
-      result = ary;
-      *is_new_object = 0;
-    }
-    else
-    {
-      Py_INCREF(array_descr(ary));
-      result = (PyArrayObject*) PyArray_FromArray(ary,
-                                                  array_descr(ary),
-                                                  NPY_FORTRANORDER);
-      *is_new_object = 1;
-    }
-    return result;
-  }
-
-  /* Convert a given PyObject to a contiguous PyArrayObject of the
-   * specified type.  If the input object is not a contiguous
-   * PyArrayObject, a new one will be created and the new object flag
-   * will be set.
-   */
-  PyArrayObject* obj_to_array_contiguous_allow_conversion(PyObject* input,
-                                                          int       typecode,
-                                                          int*      is_new_object)
-  {
-    int is_new1 = 0;
-    int is_new2 = 0;
-    PyArrayObject* ary2;
-    PyArrayObject* ary1 = obj_to_array_allow_conversion(input,
-                                                        typecode,
-                                                        &is_new1);
-    if (ary1)
-    {
-      ary2 = make_contiguous(ary1, &is_new2, 0, 0);
-      if ( is_new1 && is_new2)
-      {
-        Py_DECREF(ary1);
-      }
-      ary1 = ary2;
-    }
-    *is_new_object = is_new1 || is_new2;
-    return ary1;
-  }
-
-  /* Convert a given PyObject to a Fortran-ordered PyArrayObject of the
-   * specified type.  If the input object is not a Fortran-ordered
-   * PyArrayObject, a new one will be created and the new object flag
-   * will be set.
-   */
-  PyArrayObject* obj_to_array_fortran_allow_conversion(PyObject* input,
-                                                       int       typecode,
-                                                       int*      is_new_object)
-  {
-    int is_new1 = 0;
-    int is_new2 = 0;
-    PyArrayObject* ary2;
-    PyArrayObject* ary1 = obj_to_array_allow_conversion(input,
-                                                        typecode,
-                                                        &is_new1);
-    if (ary1)
-    {
-      ary2 = make_fortran(ary1, &is_new2);
-      if (is_new1 && is_new2)
-      {
-        Py_DECREF(ary1);
-      }
-      ary1 = ary2;
-    }
-    *is_new_object = is_new1 || is_new2;
-    return ary1;
-  }
-
-
-  /* Test whether a python object is contiguous.  If array is
-   * contiguous, return 1.  Otherwise, set the python error string and
-   * return 0.
-   */
-  int require_contiguous(PyArrayObject* ary)
-  {
-    int contiguous = 1;
-    if (!array_is_contiguous(ary))
-    {
-      PyErr_SetString(PyExc_TypeError,
-                      "Array must be contiguous.  A non-contiguous array was given");
-      contiguous = 0;
-    }
-    return contiguous;
-  }
-
-  /* Require that a numpy array is not byte-swapped.  If the array is
-   * not byte-swapped, return 1.  Otherwise, set the python error string
-   * and return 0.
-   */
-  int require_native(PyArrayObject* ary)
-  {
-    int native = 1;
-    if (!array_is_native(ary))
-    {
-      PyErr_SetString(PyExc_TypeError,
-                      "Array must have native byteorder.  "
-                      "A byte-swapped array was given");
-      native = 0;
-    }
-    return native;
-  }
-
-  /* Require the given PyArrayObject to have a specified number of
-   * dimensions.  If the array has the specified number of dimensions,
-   * return 1.  Otherwise, set the python error string and return 0.
-   */
-  int require_dimensions(PyArrayObject* ary,
-                         int            exact_dimensions)
-  {
-    int success = 1;
-    if (array_numdims(ary) != exact_dimensions)
-    {
-      PyErr_Format(PyExc_TypeError,
-                   "Array must have %d dimensions.  Given array has %d dimensions",
-                   exact_dimensions,
-                   array_numdims(ary));
-      success = 0;
-    }
-    return success;
-  }
-
-  /* Require the given PyArrayObject to have one of a list of specified
-   * number of dimensions.  If the array has one of the specified number
-   * of dimensions, return 1.  Otherwise, set the python error string
-   * and return 0.
-   */
-  int require_dimensions_n(PyArrayObject* ary,
-                           int*           exact_dimensions,
-                           int            n)
-  {
-    int success = 0;
-    int i;
-    char dims_str[255] = "";
-    char s[255];
-    for (i = 0; i < n && !success; i++)
-    {
-      if (array_numdims(ary) == exact_dimensions[i])
-      {
-        success = 1;
-      }
-    }
-    if (!success)
-    {
-      for (i = 0; i < n-1; i++)
-      {
-        sprintf(s, "%d, ", exact_dimensions[i]);
-        strcat(dims_str,s);
-      }
-      sprintf(s, " or %d", exact_dimensions[n-1]);
-      strcat(dims_str,s);
-      PyErr_Format(PyExc_TypeError,
-                   "Array must have %s dimensions.  Given array has %d dimensions",
-                   dims_str,
-                   array_numdims(ary));
-    }
-    return success;
-  }
-
-  /* Require the given PyArrayObject to have a specified shape.  If the
-   * array has the specified shape, return 1.  Otherwise, set the python
-   * error string and return 0.
-   */
-  int require_size(PyArrayObject* ary,
-                   npy_intp*      size,
-                   int            n)
-  {
-    int i;
-    int success = 1;
-    int len;
-    char desired_dims[255] = "[";
-    char s[255];
-    char actual_dims[255] = "[";
-    for(i=0; i < n;i++)
-    {
-      if (size[i] != -1 &&  size[i] != array_size(ary,i))
-      {
-        success = 0;
-      }
-    }
-    if (!success)
-    {
-      for (i = 0; i < n; i++)
-      {
-        if (size[i] == -1)
-        {
-          sprintf(s, "*,");
-        }
-        else
-        {
-          sprintf(s, "%ld,", (long int)size[i]);
-        }
-        strcat(desired_dims,s);
-      }
-      len = strlen(desired_dims);
-      desired_dims[len-1] = ']';
-      for (i = 0; i < n; i++)
-      {
-        sprintf(s, "%ld,", (long int)array_size(ary,i));
-        strcat(actual_dims,s);
-      }
-      len = strlen(actual_dims);
-      actual_dims[len-1] = ']';
-      PyErr_Format(PyExc_TypeError,
-                   "Array must have shape of %s.  Given array has shape of %s",
-                   desired_dims,
-                   actual_dims);
-    }
-    return success;
-  }
-
-  /* Require the given PyArrayObject to to be Fortran ordered.  If the
-   * the PyArrayObject is already Fortran ordered, do nothing.  Else,
-   * set the Fortran ordering flag and recompute the strides.
-   */
-  int require_fortran(PyArrayObject* ary)
-  {
-    int success = 1;
-    int nd = array_numdims(ary);
-    int i;
-    npy_intp * strides = array_strides(ary);
-    if (array_is_fortran(ary)) return success;
-    /* Set the Fortran ordered flag */
-    array_enableflags(ary,NPY_ARRAY_FARRAY);
-    /* Recompute the strides */
-    strides[0] = strides[nd-1];
-    for (i=1; i < nd; ++i)
-      strides[i] = strides[i-1] * array_size(ary,i-1);
-    return success;
-  }
-
-
-
-
-  template <typename T> int NumPyType() {return -1;};
-
-  template <class Derived>
-  void ConvertFromNumpyToEigen(Eigen::DenseBase<Derived>* out, PyObject* in)
-  {
-    int rows = 0;
-    int cols = 0;
-    // Check object type
-    if (!is_array(in))
-    {
-      PyErr_SetString(PyExc_ValueError, "The given input is not known as a NumPy array or matrix.");
-      return;
-    }
-    // Check data type
-    else if (array_type(in) != NumPyType<typename Derived::Scalar>())
-    {
-      PyErr_SetString(PyExc_ValueError, "Type mismatch between NumPy and Eigen objects.");
-      return;
-    }
-    // Check dimensions
-    else if (array_numdims(in) > 2)
-    {
-      PyErr_SetString(PyExc_ValueError, "Eigen only support 1D or 2D array.");
-      return;
-    }
-    else if (array_numdims(in) == 1)
-    {
-      rows = array_size(in,0);
-      cols = 1;
-      if ((Derived::RowsAtCompileTime != Eigen::Dynamic) && (Derived::RowsAtCompileTime != rows))
-      {
-        PyErr_SetString(PyExc_ValueError, "Row dimension mismatch between NumPy and Eigen objects (1D).");
-        return;
-      }
-      else if ((Derived::ColsAtCompileTime != Eigen::Dynamic) && (Derived::ColsAtCompileTime != 1))
-      {
-        PyErr_SetString(PyExc_ValueError, "Column dimension mismatch between NumPy and Eigen objects (1D).");
-        return;
-      }
-    }
-    else if (array_numdims(in) == 2)
-    {
-      rows = array_size(in,0);
-      cols = array_size(in,1);
-      if ((Derived::RowsAtCompileTime != Eigen::Dynamic) && (Derived::RowsAtCompileTime != array_size(in,0)))
-      {
-        PyErr_SetString(PyExc_ValueError, "Row dimension mismatch between NumPy and Eigen objects (2D).");
-        return;
-      }
-      else if ((Derived::ColsAtCompileTime != Eigen::Dynamic) && (Derived::ColsAtCompileTime != array_size(in,1)))
-      {
-        PyErr_SetString(PyExc_ValueError, "Column dimension mismatch between NumPy and Eigen objects (2D).");
-        return;
-      }
-    }
-    // Extract data
-    int isNewObject = 0;
-    PyArrayObject* temp = obj_to_array_contiguous_allow_conversion(in, array_type(in), &isNewObject);
-    if (temp == NULL)
-    {
-      PyErr_SetString(PyExc_ValueError, "Impossible to convert the input into a Python array object.");
-      return;
-    }
-    out->derived().setZero(rows, cols);
-    typename Derived::Scalar* data = static_cast<typename Derived::Scalar*>(array_data(temp));
-    for (int i = 0; i != rows; ++i)
-      for (int j = 0; j != cols; ++j)
-        out->coeffRef(i,j) = data[i*cols+j];
-  };
-
-  // Copies values from Eigen type into an existing NumPy type
-  template <class Derived>
-  void CopyFromEigenToNumPy(PyObject* out, Eigen::DenseBase<Derived>* in)
-  {
-    int rows = 0;
-    int cols = 0;
-    // Check object type
-    if (!is_array(out))
-    {
-      PyErr_SetString(PyExc_ValueError, "The given input is not known as a NumPy array or matrix.");
-      return;
-    }
-    // Check data type
-    else if (array_type(out) != NumPyType<typename Derived::Scalar>())
-    {
-      PyErr_SetString(PyExc_ValueError, "Type mismatch between NumPy and Eigen objects.");
-      return;
-    }
-    // Check dimensions
-    else if (array_numdims(out) > 2)
-    {
-      PyErr_SetString(PyExc_ValueError, "Eigen only support 1D or 2D array.");
-      return;
-    }
-    else if (array_numdims(out) == 1)
-    {
-      rows = array_size(out,0);
-      cols = 1;
-      if ((Derived::RowsAtCompileTime != Eigen::Dynamic) && (Derived::RowsAtCompileTime != rows))
-      {
-        PyErr_SetString(PyExc_ValueError, "Row dimension mismatch between NumPy and Eigen objects (1D).");
-        return;
-      }
-      else if ((Derived::ColsAtCompileTime != Eigen::Dynamic) && (Derived::ColsAtCompileTime != 1))
-      {
-        PyErr_SetString(PyExc_ValueError, "Column dimension mismatch between NumPy and Eigen objects (1D).");
-        return;
-      }
-    }
-    else if (array_numdims(out) == 2)
-    {
-      rows = array_size(out,0);
-      cols = array_size(out,1);
-    }
-
-    if (in->cols() != cols || in->rows() != rows) {
-      /// TODO: be forgiving and simply create or resize the array
-      PyErr_SetString(PyExc_ValueError, "Dimension mismatch between NumPy and Eigen object (return argument).");
-      return;
-    }
-
-    // Extract data
-    int isNewObject = 0;
-    PyArrayObject* temp = obj_to_array_contiguous_allow_conversion(out, array_type(out), &isNewObject);
-    if (temp == NULL)
-    {
-      PyErr_SetString(PyExc_ValueError, "Impossible to convert the input into a Python array object.");
-      return;
-    }
-
-    typename Derived::Scalar* data = static_cast<typename Derived::Scalar*>(array_data(out));
-
-    for (int i = 0; i != in->rows(); ++i) {
-      for (int j = 0; j != in->cols(); ++j) {
-        data[i*in->cols()+j] = in->coeff(i,j);
-      }
-    }
-  };
-
-  template <class Derived>
-  void ConvertFromEigenToNumPy(PyObject** out, Eigen::DenseBase<Derived>* in)
-  {
-    // vector (1D)
-    if (in->cols() == 1) {
-      npy_intp dims[1] = {in->rows()};
-      *out = PyArray_SimpleNew(1, dims, NumPyType<typename Derived::Scalar>());
-      typename Derived::Scalar* data = static_cast<typename Derived::Scalar*>(array_data(*out));
-      for (int i = 0; i != dims[0]; ++i)
-        data[i] = in->coeff(i, 1);
-      return;
-    }
-    // matrix (2D)
-    npy_intp dims[2] = {in->rows(), in->cols()};
-    *out = PyArray_SimpleNew(2, dims, NumPyType<typename Derived::Scalar>());
-    typename Derived::Scalar* data = static_cast<typename Derived::Scalar*>(array_data(*out));
-    for (int i = 0; i != dims[0]; ++i)
-      for (int j = 0; j != dims[1]; ++j)
-        data[i*dims[1]+j] = in->coeff(i,j);
-  };
-
-  // these funcs define the mapping between c types and numpy types;
-  // add more as needed
-  template<> int NumPyType<double>() {return NPY_DOUBLE;};
-  template<> int NumPyType<float>() {return NPY_FLOAT;};
-  template<> int NumPyType<int>() {return NPY_INT;};
-  template<> int NumPyType<long>() {return NPY_LONG;};
 
 
 SWIGINTERN int
@@ -4273,55 +3662,56 @@ fail:
 
 SWIGINTERN PyObject *_wrap_profile_mithral(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  ColMatrix< float > *arg1 = 0 ;
-  ColMatrix< float > *arg2 = 0 ;
+  int arg1 ;
+  int arg2 ;
   int arg3 ;
-  bool arg4 ;
-  ColMatrix< float > temp1 ;
-  ColMatrix< float > temp2 ;
+  int arg4 ;
+  bool arg5 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
   int val3 ;
   int ecode3 = 0 ;
-  bool val4 ;
+  int val4 ;
   int ecode4 = 0 ;
+  bool val5 ;
+  int ecode5 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
   float result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOO:profile_mithral",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
-  {
-    // In: non-const&
-    ConvertFromNumpyToEigen<ColMatrix<float>>(&temp1, obj0);
-    
-    arg1 = &temp1;
-  }
-  {
-    // In: non-const&
-    ConvertFromNumpyToEigen<ColMatrix<float>>(&temp2, obj1);
-    
-    arg2 = &temp2;
-  }
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:profile_mithral",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "profile_mithral" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "profile_mithral" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
   ecode3 = SWIG_AsVal_int(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "profile_mithral" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = static_cast< int >(val3);
-  ecode4 = SWIG_AsVal_bool(obj3, &val4);
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "profile_mithral" "', argument " "4"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "profile_mithral" "', argument " "4"" of type '" "int""'");
   } 
-  arg4 = static_cast< bool >(val4);
-  result = (float)profile_mithral(*arg1,*arg2,arg3,arg4);
+  arg4 = static_cast< int >(val4);
+  ecode5 = SWIG_AsVal_bool(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "profile_mithral" "', argument " "5"" of type '" "bool""'");
+  } 
+  arg5 = static_cast< bool >(val5);
+  result = (float)profile_mithral(arg1,arg2,arg3,arg4,arg5);
   resultobj = SWIG_From_float(static_cast< float >(result));
-  {
-    // Argout: &
-    CopyFromEigenToNumPy<ColMatrix<float>>(obj0, arg1);
-  }
-  {
-    // Argout: &
-    CopyFromEigenToNumPy<ColMatrix<float>>(obj1, arg2);
-  }
   return resultobj;
 fail:
   return NULL;
@@ -4384,7 +3774,6 @@ static PyMethodDef SwigMethods[] = {
 
 static swig_type_info _swigt__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t = {"_p_ArrayT_double_Dynamic_Dynamic_RowMajor_t", "Array< double,Dynamic,Dynamic,RowMajor > *|RowArrayXXd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ArrayT_double_Dynamic_Dynamic_t = {"_p_ArrayT_double_Dynamic_Dynamic_t", "Array< double,Dynamic,Dynamic > *|ColArrayXXd *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_ColMatrixT_float_t = {"_p_ColMatrixT_float_t", "ColMatrix< float > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t = {"_p_MatrixT_double_Dynamic_Dynamic_RowMajor_t", "Matrix< double,Dynamic,Dynamic,RowMajor > *|RowMatrixXd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MatrixT_double_Dynamic_Dynamic_t = {"_p_MatrixT_double_Dynamic_Dynamic_t", "Matrix< double,Dynamic,Dynamic > *|ColMatrixXd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t = {"_p_MatrixT_float_Dynamic_Dynamic_RowMajor_t", "Matrix< float,Dynamic,Dynamic,RowMajor > *|RowMatrixXf *", 0, 0, (void*)0, 0};
@@ -4401,7 +3790,6 @@ static swig_type_info _swigt__p_uint8_t = {"_p_uint8_t", "uint8_t *", 0, 0, (voi
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t,
   &_swigt__p_ArrayT_double_Dynamic_Dynamic_t,
-  &_swigt__p_ColMatrixT_float_t,
   &_swigt__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t,
   &_swigt__p_MatrixT_double_Dynamic_Dynamic_t,
   &_swigt__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t,
@@ -4418,7 +3806,6 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t[] = {  {&_swigt__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ArrayT_double_Dynamic_Dynamic_t[] = {  {&_swigt__p_ArrayT_double_Dynamic_Dynamic_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_ColMatrixT_float_t[] = {  {&_swigt__p_ColMatrixT_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t[] = {  {&_swigt__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MatrixT_double_Dynamic_Dynamic_t[] = {  {&_swigt__p_MatrixT_double_Dynamic_Dynamic_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t[] = {  {&_swigt__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -4435,7 +3822,6 @@ static swig_cast_info _swigc__p_uint8_t[] = {  {&_swigt__p_uint8_t, 0, 0, 0},{0,
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_ArrayT_double_Dynamic_Dynamic_RowMajor_t,
   _swigc__p_ArrayT_double_Dynamic_Dynamic_t,
-  _swigc__p_ColMatrixT_float_t,
   _swigc__p_MatrixT_double_Dynamic_Dynamic_RowMajor_t,
   _swigc__p_MatrixT_double_Dynamic_Dynamic_t,
   _swigc__p_MatrixT_float_Dynamic_Dynamic_RowMajor_t,
