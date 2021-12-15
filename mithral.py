@@ -119,14 +119,6 @@ profile_mithral = _mithral.profile_mithral
 def profile_matmul(N, D, M):
     return _mithral.profile_matmul(N, D, M)
 profile_matmul = _mithral.profile_matmul
-
-def run_matmul(X, Q):
-    return _mithral.run_matmul(X, Q)
-run_matmul = _mithral.run_matmul
-
-def run_mithral(X, Q, centroids, splitdims, splitvals, scales, offsets, luts):
-    return _mithral.run_mithral(X, Q, centroids, splitdims, splitvals, scales, offsets, luts)
-run_mithral = _mithral.run_mithral
 # This file is compatible with both classic and new-style classes.
 
 
